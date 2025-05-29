@@ -1,5 +1,6 @@
 package com.sheila.juridico.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -27,10 +28,12 @@ public class Processo {
     @Column(nullable = false)
     private StatusProcesso status;
 
-    @OneToMany(mappedBy = "processo")
+    @OneToMany(mappedBy = "processo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Participante> participantes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "processo")
+    @OneToMany(mappedBy = "processo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Acao> acoes = new ArrayList<>();
 
     public Long getId() {
@@ -71,5 +74,21 @@ public class Processo {
 
     public void setNumeroProcesso(String numeroProcesso) {
         this.numeroProcesso = numeroProcesso;
+    }
+
+    public List<Participante> getParticipantes() {
+        return participantes;
+    }
+
+    public void setParticipantes(List<Participante> participantes) {
+        this.participantes = participantes;
+    }
+
+    public List<Acao> getAcoes() {
+        return acoes;
+    }
+
+    public void setAcoes(List<Acao> acoes) {
+        this.acoes = acoes;
     }
 }
